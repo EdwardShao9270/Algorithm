@@ -1,0 +1,33 @@
+package com.sh.leetcode.array;
+
+/**
+ * 没看明白
+ *
+ * @Auther: bjshaohang
+ * @Date: 2019/3/14
+ */
+public class SatisfiabilityOfEqualityEquations990 {
+    public static void main(String[] args) {
+        String [] strArray = {"a==b","b==c","c==a"};
+
+        System.out.println(new SatisfiabilityOfEqualityEquations990().equationsPossible(strArray));
+    }
+
+    int[] uf = new int[26];
+    public boolean equationsPossible(String[] equations) {
+        for (int i = 0; i < 26; ++i)
+            uf[i] = i;
+        for (String e : equations)
+            if (e.charAt(1) == '=')
+                uf[find(e.charAt(0) - 'a')] = find(e.charAt(3) - 'a');
+        for (String e : equations)
+            if (e.charAt(1) == '!' && find(e.charAt(0) - 'a') == find(e.charAt(3) - 'a'))
+                return false;
+        return true;
+    }
+
+    public int find(int x) {
+        if (x != uf[x]) uf[x] = find(uf[x]);
+        return uf[x];
+    }
+}
